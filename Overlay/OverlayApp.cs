@@ -1,8 +1,11 @@
 using Microsoft.VisualBasic;
+using Overlay.Inventory;
 using Overlay.Network;
 using Overlay.Properties;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace Overlay
@@ -13,6 +16,7 @@ namespace Overlay
 
         private readonly NotifyIcon _icon = new NotifyIcon { Icon = SystemIcons.Application, Text = "Overlay", Visible = true };
         private ServerConnection _connection;
+        private readonly InventorySlots _slots = new InventorySlots();
 
         public OverlayApp()
         {
@@ -74,6 +78,22 @@ namespace Overlay
         private void OnMessageReceived(string line)
         {
             Debug.WriteLine($"[Serveur] {line}");
+            //Debug.WriteLine(InventoryItem.TryParse("491:SCP500:1:TrueDivinePills", out InventoryItem a) + " " + a?.CustomItemName);
+
+            //Debug.WriteLine(InventoryItem.TryParse("488:Flashlight", out InventoryItem c));
+
+
+            if (InventoryMessage.TryParse(line, out InventoryMessage message))
+            {
+                _slots.Apply(message);
+                Debug.WriteLine("Cases : " + string.Join(",", Enumerable.Range(0, InventorySlots.Count).Select(i => _slots.ItemAt(i)?.Serial.ToString() ?? "-")));
+            }
+            else
+            {
+                Debug.WriteLine("Message refusé");
+            }
+
+
         }
 
         private string GetStatusText(ConnectionStatus status)

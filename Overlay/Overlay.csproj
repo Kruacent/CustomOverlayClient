@@ -69,6 +69,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inventory\InventorySlots.cs" />
+    <Compile Include="Network\Enums\Feature.cs" />
+    <Compile Include="Inventory\InventoryItem.cs" />
+    <Compile Include="Inventory\InventoryMessage.cs" />
     <Compile Include="Network\ConnectionStatus.cs" />
     <Compile Include="Network\ServerAddress.cs" />
     <Compile Include="Network\ServerConnection.cs" />
